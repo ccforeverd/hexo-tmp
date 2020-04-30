@@ -97,21 +97,90 @@ graph LR;
 
 具体示例如下:
 
-``` js
+``` javascript
+// 使用示例
 import CourseData from '@/constants/adapter/CourseData'
 import TrainingData from '@/constants/adapter/TrainingData'
 
-...
+// ...
   const courseDetail = isTraining
     ? new Adapter(new TrainingData(res.data)).export('courseData')
     : res
-...
+// ...
   yield put({
     type: 'UPDATE_TEACHER_INFO',
     payload: new Adapter(new CourseData(res)).export('courseData.teacher')
   })
-...
+// ...
   chapterList.push(new Adapter(new TrainingData(ele)).export('courseSchedule'))
-...
+// ...
+
+```
+
+``` javascript
+// DataMapper
+export default abstract class DataMapper {
+  abstract map: MapData
+
+  constructor (
+    public data: Data
+  ) {
+  }
+
+  public transform (rule?: string | string[]): Data {
+    // ...
+    return result
+  }
+}
+
+class TrainingData extends DataMapper {
+  map = {
+    courseData: {
+      title: 'title',
+      teacher: (data: Data): Data => ({
+        teacherId: data.teacherId,
+        teacherImageId: data.teacherImageId
+      })
+      // ...
+    },
+    courseSchedule: {
+      // ...
+    }
+  }
+}
+
+```
+
+``` js
+// Adatper
+export default class Adapter {
+  constructor (
+    private dataMapper: DataMapper
+  ) {
+  }
+
+  export (rule?: string | string[]): Data {
+    return this.dataMapper.transform(rule)
+  }
+}
+```
+
+## 总结
+
+```mermaid
+
+graph LR;
+  A(数据data) --> B(数据处理DataMapper) --> C(适配器Adapter) --> D(输出想要的数据)
+
+```
+
+使用 __`Adapter`__ 使数据处理更加结构更加清晰, 降低维护成本
+
+往其他方向看, 可以用于传输组件 `props`
+
+```mermaid
+
+graph LR;
+  A(数据data) --> B(处理PropsMapper) --> C(适配器Adapter) --> D(输出想要的props) --> E(输入到Component)
 
 ```

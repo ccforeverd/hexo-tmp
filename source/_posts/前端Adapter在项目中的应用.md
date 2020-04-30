@@ -101,4 +101,17 @@ graph LR;
 import CourseData from '@/constants/adapter/CourseData'
 import TrainingData from '@/constants/adapter/TrainingData'
 
+...
+  const courseDetail = isTraining
+    ? new Adapter(new TrainingData(res.data)).export('courseData')
+    : res
+...
+  yield put({
+    type: 'UPDATE_TEACHER_INFO',
+    payload: new Adapter(new CourseData(res)).export('courseData.teacher')
+  })
+...
+  chapterList.push(new Adapter(new TrainingData(ele)).export('courseSchedule'))
+...
+
 ```

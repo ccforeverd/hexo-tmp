@@ -10,8 +10,18 @@ tags:
     mermaid.initialize();
   }
 </script>
+<style>
+  .gutter { display: none; }
+</style>
 
 ## 背景
+
+```mermaid
+
+graph LR;
+  A(训练营) --> B(精品课)
+
+```
 
 - PC主站 `edu_web_3.0` (`react` + `umi` + `dva`)合并训练营相关业务
 - 不同的接口数据
@@ -30,6 +40,13 @@ tags:
   - 在 `modules/global` 里通过监听 `history` 来请求基本数据
 
 ## 项目思路
+
+```mermaid
+
+graph LR;
+  A(训练营数据) --> | Adapter | B(精品课数据)
+
+```
 
 - 首先添加新版本 `v3.2.0` (即分支名)
 - 页面:
@@ -53,7 +70,7 @@ tags:
 ```mermaid
 
 graph LR;
-  data1-->Adapter==>state;
+  data1-->Adapter-->state;
   data2-->Adapter;
   data3-->Adapter;
   data... -->Adapter;
@@ -69,7 +86,7 @@ graph LR;
 ```mermaid
 
 graph LR;
-  data1-->DataMapper1-->Adapter==>state;
+  data1-->DataMapper1-->Adapter-->state;
   data2-->DataMapper1;
   data3-->DataMapper2-->Adapter;
   data... -->DataMapper... -->Adapter;
